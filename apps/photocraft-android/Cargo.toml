@@ -1,0 +1,34 @@
+[package]
+name = "photocraft-android"
+description = "PhotoCraft on Android (eframe wgpu runner via android-activity)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "photocraft_android"
+path = "src/lib.rs"
+
+[features]
+default = []
+# Open HEIC/HEIF photos (optional photocraft-heif crate)
+heif = ["photocraft-codecs/heif"]
+
+[dependencies]
+photocraft-doc = { workspace = true }
+photocraft-engine = { workspace = true }
+photocraft-codecs = { workspace = true }
+photocraft-io = { workspace = true }
+photocraft-ui-egui = { workspace = true }
+egui = { workspace = true }
+log = { workspace = true }
+
+[target.'cfg(target_os = "android")'.dependencies]
+eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "android-game-activity"] }
+android_activity = { version = "0.6", features = ["game-activity"] }
+

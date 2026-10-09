@@ -22,7 +22,7 @@ pub mod adjust_ui;
 pub mod analysis_ui;
 pub mod artboard_ui;
 pub(crate) mod blend_preview;
-mod brand;
+pub mod brand;
 pub mod brush_panel;
 pub mod brush_picker;
 pub mod brush_preview;
@@ -370,6 +370,9 @@ pub struct PhotocraftApp {
     /// Windows and Linux: the window has no OS decorations and the app's top bar is the title bar
     /// (caption buttons, window dragging and edge resizing, `titlebar`).
     pub custom_titlebar: bool,
+    /// Desktop title bar with menu headings, workspace picker and window controls.
+    /// Can be hidden on mobile/embedded shells (`show_titlebar = false`).
+    pub show_titlebar: bool,
     fonts_ready: bool,
     /// Screen rect of the main canvas last frame (for overlays and the navigator).
     pub last_canvas_rect: egui::Rect,
@@ -521,6 +524,7 @@ impl PhotocraftApp {
             styled: false,
             integrated_titlebar: false,
             custom_titlebar: false,
+            show_titlebar: true,
             fonts_ready: false,
             last_canvas_rect: egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(800.0, 600.0)),
             drop_canvas_rect: None,
@@ -1142,7 +1146,7 @@ impl eframe::App for PhotocraftApp {
         if !chrome && ctx.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::Escape)) {
             let _ = menus::invoke(self, &ctx, "view.screenMode.standard", serde_json::json!({}));
         }
-        if chrome {
+        if chrome && self.show_titlebar {
             panels::title_bar(self, ui);
         }
         if chrome && self.ui.panels.options_bar {

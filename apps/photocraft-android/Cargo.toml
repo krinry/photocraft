@@ -39,6 +39,7 @@ android-activity = { version = "0.6", features = ["native-activity"] }
 [package.metadata.android]
 package = "ai.storyteller.photocraft"
 apk_label = "PhotoCraft"
+res = "res"
 
 [package.metadata.android.sdk]
 min_sdk_version = 26

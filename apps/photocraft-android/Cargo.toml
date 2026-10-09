@@ -6,8 +6,12 @@ edition.workspace = true
 license.workspace = true
 publish = false
 
-[lints]
-workspace = true
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

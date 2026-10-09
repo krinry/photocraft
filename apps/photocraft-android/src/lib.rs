@@ -10,7 +10,7 @@
 //! - Stylus / pen pressure support;
 //! - Android application storage sandbox for preferences and crash recovery.
 
-#![forbid(unsafe_code)]
+#![deny(unsafe_code)]
 #![deny(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::unimplemented, clippy::todo, clippy::unreachable)]
 
 pub mod mobile;
@@ -19,7 +19,9 @@ pub mod mobile;
 mod android_app;
 
 #[cfg(target_os = "android")]
-#[no_mangle]
+// SAFETY: Required by android-activity to export the C entry point for Android NativeActivity.
+#[allow(unsafe_code)]
+#[unsafe(no_mangle)]
 fn android_main(app: android_activity::AndroidApp) {
     android_app::start(app);
 }

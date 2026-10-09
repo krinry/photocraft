@@ -1,7 +1,6 @@
 //! Android application runtime and eframe runner setup.
 
 use std::path::PathBuf;
-use std::sync::Arc;
 
 use photocraft_doc::Document;
 use photocraft_engine::Session;
@@ -24,7 +23,7 @@ pub fn start(android_app: android_activity::AndroidApp) {
         options,
         Box::new(move |cc| {
             photocraft_ui_egui::PhotocraftApp::setup_context(&cc.egui_ctx, photocraft_ui_egui::theme::ThemeKind::Pro);
-            mobile::configure_mobile_style(&mut cc.egui_ctx.style_mut());
+            cc.egui_ctx.global_style_mut(mobile::configure_mobile_style);
 
             let services = create_mobile_services(internal_path.clone());
             let mut app = PhotocraftApp::new(Session::new(), services);
@@ -71,11 +70,11 @@ fn create_mobile_services(storage_dir: Option<PathBuf>) -> Services {
         let prefs_file = prefs_dir.join("photocraft_prefs.json");
 
         let read_path = prefs_file.clone();
-        services.load_prefs = Some(Arc::new(move || std::fs::read_to_string(&read_path).ok()));
+        services.load_prefs = Some(Box::new(move || std::fs::read_to_string(&read_path).ok()));
 
         let write_path = prefs_file;
-        services.save_prefs = Some(Arc::new(move |content: &str| {
-            let _ = std::fs::write(&write_path, content);
+        services.save_prefs = Some(Box::new(move |content: &str| {
+            std::fs::write(&write_path, content).map_err(|e| e.to_string())
         }));
     }
 

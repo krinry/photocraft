@@ -29,6 +29,11 @@ if ! rustup target list --installed | grep -q "$TARGET"; then
   echo "warning: $TARGET target not installed. Run: rustup target add $TARGET" >&2
 fi
 
+# Ensure keystore exists for release signing
+if [ "$MODE" = "release" ] && [ ! -f "$ROOT/apps/photocraft-android/release.keystore" ]; then
+  keytool -genkey -v -keystore "$ROOT/apps/photocraft-android/release.keystore" -alias photocraft -keyalg RSA -keysize 2048 -validity 10000 -storepass photocraft -keypass photocraft -dname "CN=PhotoCraft, OU=Dev, O=Storyteller, L=City, S=State, C=US"
+fi
+
 # Build using cargo-apk if available
 if command -v cargo-apk >/dev/null 2>&1; then
   echo "==> Building APK using cargo-apk..."

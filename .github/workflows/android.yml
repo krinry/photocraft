@@ -37,6 +37,12 @@ jobs:
         run: |
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "platforms;android-30" "build-tools;34.0.0"
 
+      - name: Ensure Keystore Exists
+        run: |
+          if [ ! -f "apps/photocraft-android/release.keystore" ]; then
+            keytool -genkey -v -keystore apps/photocraft-android/release.keystore -alias photocraft -keyalg RSA -keysize 2048 -validity 10000 -storepass photocraft -keypass photocraft -dname "CN=PhotoCraft, OU=Dev, O=Storyteller, L=City, S=State, C=US"
+          fi
+
       - name: Build APK (Release)
         run: |
           cargo apk build -p photocraft-android --target aarch64-linux-android --release

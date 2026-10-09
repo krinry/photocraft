@@ -33,7 +33,7 @@ egui = { workspace = true }
 log = { workspace = true }
 
 [target.'cfg(target_os = "android")'.dependencies]
-eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "android-native-activity"] }
+eframe = { workspace = true, features = ["default_fonts", "wgpu", "android-native-activity"] }
 android-activity = { version = "0.6", features = ["native-activity"] }
 
 [package.metadata.android]

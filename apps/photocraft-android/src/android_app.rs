@@ -17,7 +17,17 @@ pub fn start(android_app: android_activity::AndroidApp) {
     let mut options = eframe::NativeOptions::default();
     options.android_app = Some(android_app);
 
-    // Default to wgpu with Vulkan backend on Android.
+    // On Android, use GLES backend by default to avoid ANativeWindow double-binding
+    // crashes when probing Vulkan on emulators, Waydroid, and older GPUs.
+    if let eframe::egui_wgpu::WgpuSetup::CreateNew(ref mut create) = options.wgpu_options.wgpu_setup {
+        let use_vulkan = std::env::var("PHOTOCRAFT_VULKAN").map(|v| v == "1" || v == "true").unwrap_or(false);
+        if use_vulkan {
+            create.instance_descriptor.backends = eframe::wgpu::Backends::VULKAN;
+        } else {
+            create.instance_descriptor.backends = eframe::wgpu::Backends::GL;
+        }
+    }
+
     photocraft_ui_egui::gpu_canvas::use_adapter_limits(&mut options.wgpu_options.wgpu_setup);
 
     let result = eframe::run_native(

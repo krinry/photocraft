@@ -75,7 +75,12 @@ jobs:
       - name: Locate and Stage APK
         run: |
           mkdir -p dist/apk
-          cp -v target/${{ matrix.target }}/release/apk/*.apk dist/apk/photocraft-android-${{ matrix.name }}.apk || find target -name "*.apk" -exec cp -v {} dist/apk/photocraft-android-${{ matrix.name }}.apk \;
+          APK_FILE=$(find target -name "*_android.apk" ! -name "*-unaligned.apk" | head -n 1)
+          if [ -z "$APK_FILE" ]; then
+            APK_FILE=$(find target -name "*.apk" ! -name "*-unaligned.apk" | head -n 1)
+          fi
+          echo "Found APK: $APK_FILE"
+          cp -v "$APK_FILE" dist/apk/photocraft-android-${{ matrix.name }}.apk
           ls -lh dist/apk/
 
       - name: Upload APK Artifact

@@ -30,12 +30,12 @@ log = { workspace = true }
 
 [target.'cfg(target_os = "android")'.dependencies]
 eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "android-game-activity"] }
-android_activity = { version = "0.6", features = ["game-activity"] }
+android-activity = { version = "0.6", features = ["game-activity"] }
 
 [package.metadata.android]
 package = "ai.storyteller.photocraft"
 apk_label = "PhotoCraft"
-target_sdk_version = 36
+target_sdk_version = 34
 min_sdk_version = 26
 
 

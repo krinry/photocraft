@@ -33,8 +33,8 @@ egui = { workspace = true }
 log = { workspace = true }
 
 [target.'cfg(target_os = "android")'.dependencies]
-eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "android-game-activity"] }
-android-activity = { version = "0.6", features = ["game-activity"] }
+eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "android-native-activity"] }
+android-activity = { version = "0.6", features = ["native-activity"] }
 
 [package.metadata.android]
 package = "ai.storyteller.photocraft"

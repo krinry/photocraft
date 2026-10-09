@@ -5,7 +5,7 @@ use std::sync::{Arc, Mutex};
 
 use photocraft_doc::Document;
 use photocraft_engine::Session;
-use photocraft_ui_egui::file_dialog::{FileDialogAnswer, FileDialogRequest};
+use photocraft_ui_egui::file_dialog::FileDialogRequest;
 use photocraft_ui_egui::{PhotocraftApp, Services};
 
 use crate::mobile;

@@ -20,7 +20,7 @@ if [ "${1:-}" = "--debug" ]; then
   BUILD_FLAG=""
 fi
 
-TARGET="aarch64-linux-android"
+TARGET="${2:-${TARGET:-aarch64-linux-android}}"
 
 echo "==> Packaging PhotoCraft for Android ($MODE, $TARGET)..."
 
